@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "855134274675",
+    "firebase_url": "https://gardenguru-36f81-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "gardenguru-36f81",
+    "storage_bucket": "gardenguru-36f81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855134274675:android:b3a5c956fd2a2e732f5606",
+        "android_client_info": {
+          "package_name": "com.example.gardenguru"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC137hl9eelwnbXd94OF_RO2SuyoobL3dw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
