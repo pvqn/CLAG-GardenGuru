@@ -1,43 +1,47 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenguru/models/plant.dart';
 
-Plant apple = Plant(
-  id: 0,
-  name: "Apple",
-  description:
-      "Apples are a popular fruit known for their sweet and crisp taste.",
-  type: "Fruit",
-  soil: "Well-draining, loamy soil",
-  position: "Full sun",
-  feeding: "Regular feeding with balanced fertilizer",
-  plantingMaterial: "Dwarf tree or bare-root tree",
-  spacing: "10-15 feet between trees",
-  plantingSteps: [
-    "Choose a sunny location with well-drained soil.",
-    "Plant apple trees in late winter or early spring.",
-    "Dig a hole and plant the tree with the graft union above the soil line.",
-    "Water regularly and prune as needed."
-  ],
-  temperature: {
-    "ideal": 70,
-    "max": 100,
-    "min": -20,
-  },
-  temperatureUnit: "Fahrenheit",
-  growingDuration: {
-    "ideal": 913,
-    "max": 1095,
-    "min": 730,
-  },
-  growingTimeUnit: "days",
-);
-
 @RoutePage()
-class PlantScreen extends StatelessWidget {
+class PlantScreen extends StatefulWidget {
   final Plant plant;
   PlantScreen({required this.plant});
+
+  @override
+  State<PlantScreen> createState() => _PlantScreenState();
+}
+
+class _PlantScreenState extends State<PlantScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseReference _databaseReference = FirebaseDatabase.instance
+      .reference(); // Reference to your Firebase Realtime Database
+  List<int> numbersList = [];
+
+  Future<void> _addToNumbersList(int index) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        String userId = user.uid; // Get the current user's ID
+
+        // Get the reference to 'numbers' array in the user's data
+        DatabaseReference numbersRef =
+            _databaseReference.child('users').child(userId).child('numbers');
+
+        // Push the new value to the 'numbers' array
+        numbersRef.push().set(index);
+
+        // Successfully updated 'numbers' array, you can perform additional actions here
+      } else {
+        print('User not authenticated.');
+      }
+    } catch (e) {
+      print('Error updating numbers array: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -67,7 +71,7 @@ class PlantScreen extends StatelessWidget {
             child: Container(
               child: Image.asset(
                 'assets/plants/' +
-                    plant.id.toString() +
+                    widget.plant.id.toString() +
                     '.jpg', // Replace with your image asset path
                 fit: BoxFit.cover,
                 height: 300,
@@ -100,27 +104,25 @@ class PlantScreen extends StatelessWidget {
                         ),
                       ),
                       Expanded(child: Text('')),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Opacity(
-                          opacity: 0.7,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    16.0), // Same as ClipRRect radius
-                              )),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                            ),
-                            child: Text(
-                              'Add to your garden',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black, fontSize: 12),
-                            ),
-                          ),
+                      ElevatedButton(
+                        onPressed: () {
+                          print('ok');
+                          _addToNumbersList(widget.plant.id);
+                          print('Number added to the list!');
+                        },
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                16.0), // Same as ClipRRect radius
+                          )),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                        child: Text(
+                          'Add to your garden',
+                          style: GoogleFonts.poppins(
+                              color: Colors.black, fontSize: 12),
                         ),
                       )
                     ],
@@ -143,7 +145,7 @@ class PlantScreen extends StatelessWidget {
                                       fontSize: 13)),
                             ),
                             Text(
-                              plant.type,
+                              widget.plant.type,
                               style: GoogleFonts.inter(
                                   textStyle: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
@@ -162,9 +164,10 @@ class PlantScreen extends StatelessWidget {
                             ),
                             Text(
                               '~ ' +
-                                  plant.growingDuration['ideal'].toString() +
+                                  widget.plant.growingDuration['ideal']
+                                      .toString() +
                                   ' ' +
-                                  plant.growingTimeUnit,
+                                  widget.plant.growingTimeUnit,
                               style: GoogleFonts.inter(
                                   textStyle: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
@@ -182,9 +185,9 @@ class PlantScreen extends StatelessWidget {
                                       fontSize: 13)),
                             ),
                             Text(
-                              plant.temperature['ideal'].toString() +
+                              widget.plant.temperature['ideal'].toString() +
                                   ' ' +
-                                  plant.temperatureUnit,
+                                  widget.plant.temperatureUnit,
                               style: GoogleFonts.inter(
                                   textStyle: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
@@ -226,9 +229,9 @@ class PlantScreen extends StatelessWidget {
             child: TabBarView(
               children: [
                 SummaryTab(
-                  plant: plant,
+                  plant: widget.plant,
                 ),
-                DirectionsTab(plant: plant),
+                DirectionsTab(plant: widget.plant),
               ],
             ),
           ),

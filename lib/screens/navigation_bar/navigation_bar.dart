@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:gardenguru/screens/navigation_bar/profile/profile.dart';
 import 'package:gardenguru/screens/navigation_bar/shopping/shopping.dart';
 import 'package:gardenguru/screens/screen.dart';
 import 'home/home.dart';
@@ -35,7 +36,7 @@ class MyNavigationBarAppState extends State<MyNavigationBarApp> {
     PlantGeneratorScreen(),
     ShoppingScreen(),
     DoctorScreen(),
-    const ThirdScreen(),
+    ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {

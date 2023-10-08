@@ -8,6 +8,7 @@ class Post {
   String name;
   String time;
   String status;
+  bool isLiked = false;
   Post(
       {this.name = 'atsuki mashiko',
       this.status =
@@ -90,9 +91,24 @@ class _PostListState extends State<PostList> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.favorite,
-                  color: Color(0xFF666538),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      widget.posts[index].isLiked =
+                          !widget.posts[index].isLiked;
+                      if (widget.posts[index].isLiked) {
+                        widget.posts[index].likes++;
+                      } else {
+                        widget.posts[index].likes--;
+                      }
+                    });
+                  },
+                  child: Icon(
+                    widget.posts[index].isLiked
+                        ? Icons.favorite
+                        : Icons.favorite_outline_outlined,
+                    color: Color(0xFF666538),
+                  ),
                 ),
                 const SizedBox(
                   width: 5,

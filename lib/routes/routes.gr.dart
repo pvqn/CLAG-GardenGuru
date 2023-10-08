@@ -15,6 +15,31 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ChatWithDoctorRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ChatWithDoctorScreen(),
+      );
+    },
+    DiseaseDetectRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DiseaseDetectScreen(),
+      );
+    },
+    DiseaseRoute.name: (routeData) {
+      final args = routeData.argsAs<DiseaseRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DiseaseScreen(item: args.item),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoginScreen(),
+      );
+    },
     NavigationBarRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -52,7 +77,84 @@ abstract class _$AppRouter extends RootStackRouter {
         child: ShopScreen(shop: args.shop),
       );
     },
+    SignUpRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SignUpScreen(),
+      );
+    },
   };
+}
+
+/// generated route for
+/// [ChatWithDoctorScreen]
+class ChatWithDoctorRoute extends PageRouteInfo<void> {
+  const ChatWithDoctorRoute({List<PageRouteInfo>? children})
+      : super(
+          ChatWithDoctorRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatWithDoctorRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DiseaseDetectScreen]
+class DiseaseDetectRoute extends PageRouteInfo<void> {
+  const DiseaseDetectRoute({List<PageRouteInfo>? children})
+      : super(
+          DiseaseDetectRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DiseaseDetectRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DiseaseScreen]
+class DiseaseRoute extends PageRouteInfo<DiseaseRouteArgs> {
+  DiseaseRoute({
+    required Disease item,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DiseaseRoute.name,
+          args: DiseaseRouteArgs(item: item),
+          initialChildren: children,
+        );
+
+  static const String name = 'DiseaseRoute';
+
+  static const PageInfo<DiseaseRouteArgs> page =
+      PageInfo<DiseaseRouteArgs>(name);
+}
+
+class DiseaseRouteArgs {
+  const DiseaseRouteArgs({required this.item});
+
+  final Disease item;
+
+  @override
+  String toString() {
+    return 'DiseaseRouteArgs{item: $item}';
+  }
+}
+
+/// generated route for
+/// [LoginScreen]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -190,4 +292,18 @@ class ShopRouteArgs {
   String toString() {
     return 'ShopRouteArgs{shop: $shop}';
   }
+}
+
+/// generated route for
+/// [SignUpScreen]
+class SignUpRoute extends PageRouteInfo<void> {
+  const SignUpRoute({List<PageRouteInfo>? children})
+      : super(
+          SignUpRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SignUpRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
