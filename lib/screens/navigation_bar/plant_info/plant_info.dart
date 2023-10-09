@@ -26,14 +26,10 @@ class _PlantScreenState extends State<PlantScreen> {
       if (user != null) {
         String userId = user.uid; // Get the current user's ID
 
-        // Get the reference to 'numbers' array in the user's data
         DatabaseReference numbersRef =
             _databaseReference.child('users').child(userId).child('numbers');
 
-        // Push the new value to the 'numbers' array
         numbersRef.push().set(index);
-
-        // Successfully updated 'numbers' array, you can perform additional actions here
       } else {
         print('User not authenticated.');
       }
