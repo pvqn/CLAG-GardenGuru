@@ -1,8 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenguru/models/post.dart';
+import 'package:gardenguru/providers/post_provider.dart';
 import 'package:gardenguru/routes/routes.dart';
+import 'package:gardenguru/screens/navigation_bar/home/post_list.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -93,7 +97,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(AddPostRoute());
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                         const Color(0xFF666538)), // Set background color
@@ -163,18 +169,43 @@ Widget _buildTabsContent() {
 class PostsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Posts'),
-    );
+    return FutureBuilder<List<Post>>(
+        future: Provider.of<PostProvider>(context, listen: false).fetchPosts(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No posts available.'));
+          } else {
+            List<Post> posts = snapshot.data!;
+
+            return PostList(
+              posts: posts.reversed.toList(),
+            );
+          }
+        });
   }
 }
 
 class RepostsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Posts'),
-    );
+    return FutureBuilder<List<Post>>(
+        future:
+            Provider.of<RepostProvider>(context, listen: false).fetchPosts(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No posts  available.'));
+          } else {
+            List<Post> posts = snapshot.data!;
+
+            return PostList(
+              posts: posts.reversed.toList(),
+            );
+          }
+        });
   }
 }
 

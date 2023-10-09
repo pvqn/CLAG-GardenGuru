@@ -215,7 +215,7 @@ class SignUpPasswordInput extends StatelessWidget {
               controller: controller,
               obscureText: isObscured,
               decoration: InputDecoration(
-                hintText: 'At least 8 characters',
+                hintText: 'At least 6 characters',
                 hintStyle: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                   fontSize: 13,

@@ -7,5 +7,5 @@ export 'navigation_bar/shopping/product.dart';
 export 'navigation_bar/doctor/disease_info.dart';
 export 'navigation_bar/doctor/disease_detect.dart';
 export 'navigation_bar/doctor/chat_doctor.dart';
-export 'auth/sign_up.dart';
-export 'auth/sign_in.dart';
+export 'auth/auth.dart';
+export 'navigation_bar/profile/add_post.dart';

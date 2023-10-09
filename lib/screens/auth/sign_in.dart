@@ -29,6 +29,12 @@ class _WelcomeBackPageState extends State<_WelcomeBackPage> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool isObscured = true;
+  void _togglePasswordVisibility() {
+    setState(() {
+      isObscured = !isObscured;
+    });
+  }
 
   @override
   void initState() {
@@ -66,7 +72,10 @@ class _WelcomeBackPageState extends State<_WelcomeBackPage> {
               const SizedBox(height: 56),
               EmailInput(emailController: _emailController),
               const SizedBox(height: 16),
-              PasswordInput(passwordController: _passwordController),
+              SignInPasswordInput(
+                  controller: _passwordController,
+                  isObscured: isObscured,
+                  togglePasswordVisibility: _togglePasswordVisibility),
               const SizedBox(height: 30),
               const ForgotPasswordText(),
               const SizedBox(height: 7),
@@ -177,23 +186,19 @@ class _EmailInputState extends State<EmailInput> {
   }
 }
 
-class PasswordInput extends StatefulWidget {
-  final TextEditingController _passwordController;
+class SignInPasswordInput extends StatelessWidget {
+  final TextEditingController controller;
+  final bool isObscured;
+  final Function togglePasswordVisibility;
+  final String label;
 
-  const PasswordInput(
-      {super.key, required TextEditingController passwordController})
-      : _passwordController = passwordController;
-
-  @override
-  State<PasswordInput> createState() => _PasswordInputState();
-}
-
-class _PasswordInputState extends State<PasswordInput> {
-  bool _isObscured = true;
-
-  void _togglePasswordVisibility() {
-    _isObscured = !_isObscured;
-  }
+  const SignInPasswordInput({
+    super.key,
+    required this.controller,
+    required this.isObscured,
+    required this.togglePasswordVisibility,
+    this.label = 'Password',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +209,7 @@ class _PasswordInputState extends State<PasswordInput> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Password',
+            label,
             style: GoogleFonts.inter(
                 textStyle:
                     const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
@@ -213,12 +218,14 @@ class _PasswordInputState extends State<PasswordInput> {
           SizedBox(
             height: 43.0,
             child: TextField(
-              controller: widget._passwordController,
-              obscureText: _isObscured,
+              controller: controller,
+              obscureText: isObscured,
               decoration: InputDecoration(
-                hintText: 'At least 8 characters',
+                hintText: 'At least 6 characters',
                 hintStyle: GoogleFonts.poppins(
-                    textStyle: const TextStyle(fontSize: 14)),
+                    textStyle: const TextStyle(
+                  fontSize: 13,
+                )),
                 border: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xFFD9D9D9), width: 2.0),
@@ -232,10 +239,10 @@ class _PasswordInputState extends State<PasswordInput> {
                     vertical: 10.0, horizontal: 12.0),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _isObscured ? Icons.visibility : Icons.visibility_off,
+                    isObscured ? Icons.visibility : Icons.visibility_off,
                     color: const Color(0xFFD9D9D9),
                   ),
-                  onPressed: _togglePasswordVisibility,
+                  onPressed: () => togglePasswordVisibility(),
                 ),
               ),
             ),

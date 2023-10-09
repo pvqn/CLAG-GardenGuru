@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gardenguru/models/post.dart';
 import 'package:gardenguru/providers/plant_provider.dart';
+import 'package:gardenguru/providers/post_provider.dart';
 import 'package:gardenguru/screens/navigation_bar/home/category_list.dart';
 import 'package:gardenguru/screens/navigation_bar/home/post_list.dart';
 import 'package:gardenguru/utils/plants_support.dart';
@@ -226,6 +228,25 @@ class _HomepageState extends State<Homepage> {
                     color: Color(0xFF666538),
                     fontSize: 18,
                     fontWeight: FontWeight.w500)),
+          ),
+          FutureBuilder<List<Post>>(
+            future:
+                Provider.of<PostProvider>(context, listen: false).fetchPosts(),
+            //plantProvider.fetchPlants(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const SizedBox(
+                  height: 0,
+                );
+              } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                return const SizedBox(
+                  height: 0,
+                );
+              } else {
+                List<Post> posts = snapshot.data!;
+                return PostList(posts: posts.reversed.toList());
+              }
+            },
           ),
           PostList()
         ]),
