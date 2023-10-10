@@ -9,3 +9,4 @@ export 'navigation_bar/doctor/disease_detect.dart';
 export 'navigation_bar/doctor/chat_doctor.dart';
 export 'auth/auth.dart';
 export 'navigation_bar/profile/add_post.dart';
+export 'navigation_bar/profile/routine.dart';

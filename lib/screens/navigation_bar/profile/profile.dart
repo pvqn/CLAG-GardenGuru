@@ -1,10 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenguru/models/plant.dart';
 import 'package:gardenguru/models/post.dart';
+import 'package:gardenguru/models/timeline.dart';
+import 'package:gardenguru/providers/plant_provider.dart';
 import 'package:gardenguru/providers/post_provider.dart';
+import 'package:gardenguru/providers/timeline_provider.dart';
 import 'package:gardenguru/routes/routes.dart';
 import 'package:gardenguru/screens/navigation_bar/home/post_list.dart';
+import 'package:gardenguru/screens/navigation_bar/profile/garden_list.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -212,8 +217,44 @@ class RepostsTab extends StatelessWidget {
 class GardenTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Posts'),
-    );
+    return FutureBuilder<List<int>>(
+        future: Provider.of<GardenProvider>(context, listen: false)
+            .fetchGardenNumbers(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No timeline available.'));
+          } else {
+            List<int> timelineitems = snapshot.data!;
+            // for (var item in timelineitems) {
+            //   print(item.toString() + ', ');
+            // }
+
+            return FutureBuilder<List<Plant>>(
+                future: Provider.of<PlantProvider>(context, listen: false)
+                    .fetchPlants(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No timeline available.'));
+                  } else {
+                    List<Plant> plants = snapshot.data!;
+                    List<Plant> temp = [];
+                    for (int i = 0; i < timelineitems.length; ++i) {
+                      for (int j = 0; j < plants.length; ++j) {
+                        if (plants[j].id == timelineitems[i]) {
+                          temp.add(plants[j]);
+                        }
+                      }
+                    }
+                    return GardenGridView(
+                      plants: temp,
+                    );
+                  }
+                });
+          }
+        });
   }
 }

@@ -6,10 +6,12 @@ import 'package:gardenguru/providers/disease_provider.dart';
 import 'package:gardenguru/providers/maintenance_provider.dart';
 import 'package:gardenguru/providers/post_provider.dart';
 import 'package:gardenguru/providers/province_provider.dart';
+import 'package:gardenguru/providers/timeline_provider.dart';
 import 'package:gardenguru/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gardenguru/providers/plant_provider.dart';
+import 'package:gardenguru/providers/weather_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +28,9 @@ void main() async {
       ChangeNotifierProvider(create: (_) => DiseaseProvider()),
       ChangeNotifierProvider(create: (_) => RepostProvider()),
       ChangeNotifierProvider(create: (_) => PostProvider()),
+      ChangeNotifierProvider(create: (_) => WeatherProvider()),
+      ChangeNotifierProvider(create: (_) => TimelineProvider()),
+      ChangeNotifierProvider(create: (_) => GardenProvider()),
     ],
     child: MyApp(),
   ));

@@ -61,7 +61,7 @@ class _DiseaseDetectState extends State<DiseaseDetectScreen> {
           } catch (e) {
             print(e);
           }
-          print(base64Data);
+          //print(base64Data);
         }
       });
     });

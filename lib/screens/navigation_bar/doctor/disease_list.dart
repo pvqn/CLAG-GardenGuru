@@ -53,7 +53,7 @@ class _GridItemState extends State<GridItem> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.only(right: 3, left: 3, bottom: 10),
           width: 158,
           height: 158, // Set a fixed height
           decoration: BoxDecoration(

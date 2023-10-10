@@ -143,7 +143,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   return const Center(child: Text('No plants available.'));
                 } else {
                   diseases = snapshot.data!;
-                  print(diseases[0].diseaseName);
+                  //print(diseases[0].diseaseName);
                   diseases.removeAt(4);
                   return Expanded(child: DiseaseListView(diseases: diseases));
                 }

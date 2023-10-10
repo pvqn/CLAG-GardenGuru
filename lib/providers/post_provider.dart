@@ -76,3 +76,39 @@ class PostProvider with ChangeNotifier {
     return _posts;
   }
 }
+
+class GardenProvider with ChangeNotifier {
+  List<int> _garden = [];
+
+  List<int> get garden => _garden;
+
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.reference();
+
+  Future<List<int>> fetchGardenNumbers() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    User? user = _auth.currentUser;
+    try {
+      if (user != null) {
+        String userId = user.uid;
+        DatabaseReference userNumbersRef =
+            _databaseReference.child('users').child(userId).child('numbers');
+
+        DatabaseEvent databaseEvent = await userNumbersRef.once();
+        dynamic dataList = databaseEvent.snapshot.value;
+
+        if (dataList != null && dataList is Map<dynamic, dynamic>) {
+          _garden = dataList.values.map<int>((value) => value as int).toList();
+        } else {
+          _garden = [];
+        }
+
+        notifyListeners();
+        return _garden;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return _garden;
+  }
+}

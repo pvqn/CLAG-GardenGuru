@@ -66,6 +66,13 @@ abstract class _$AppRouter extends RootStackRouter {
         child: ProductScreen(item: args.item),
       );
     },
+    RoutineRoute.name: (routeData) {
+      final args = routeData.argsAs<RoutineRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RoutineScreen(index: args.index),
+      );
+    },
     SelectCategoryRoute.name: (routeData) {
       final args = routeData.argsAs<SelectCategoryRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -245,6 +252,35 @@ class ProductRouteArgs {
   @override
   String toString() {
     return 'ProductRouteArgs{item: $item}';
+  }
+}
+
+/// generated route for
+/// [RoutineScreen]
+class RoutineRoute extends PageRouteInfo<RoutineRouteArgs> {
+  RoutineRoute({
+    required int index,
+    List<PageRouteInfo>? children,
+  }) : super(
+          RoutineRoute.name,
+          args: RoutineRouteArgs(index: index),
+          initialChildren: children,
+        );
+
+  static const String name = 'RoutineRoute';
+
+  static const PageInfo<RoutineRouteArgs> page =
+      PageInfo<RoutineRouteArgs>(name);
+}
+
+class RoutineRouteArgs {
+  const RoutineRouteArgs({required this.index});
+
+  final int index;
+
+  @override
+  String toString() {
+    return 'RoutineRouteArgs{index: $index}';
   }
 }
 

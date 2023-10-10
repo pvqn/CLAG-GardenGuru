@@ -102,9 +102,9 @@ class _PlantScreenState extends State<PlantScreen> {
                       Expanded(child: Text('')),
                       ElevatedButton(
                         onPressed: () {
-                          print('ok');
+                          // print('ok');
                           _addToNumbersList(widget.plant.id);
-                          print('Number added to the list!');
+                          //print('Number added to the list!');
                         },
                         style: ButtonStyle(
                           shape: MaterialStateProperty.all<OutlinedBorder>(

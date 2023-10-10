@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gardenguru/models/plant.dart';
 import 'package:gardenguru/models/province.dart';
+import 'package:gardenguru/models/weather.dart';
 import 'package:gardenguru/providers/maintenance_provider.dart';
 import 'package:gardenguru/providers/plant_provider.dart';
 import 'package:gardenguru/providers/province_provider.dart';
+import 'package:gardenguru/providers/weather_provider.dart';
 import 'package:gardenguru/routes/routes.dart';
 import 'package:gardenguru/utils/plants_support.dart';
 import 'package:gardenguru/utils/provinces_support.dart';
@@ -72,6 +75,12 @@ class _PlantGeneratorScreenState extends State<PlantGeneratorScreen> {
                           return const SizedBox(height: 0);
                         } else {
                           widget.plants = snapshot.data!;
+                          // for (int i = 0; i < widget.plants.length; ++i) {
+                          //   print(widget.plants[i].id.toString() +
+                          //       ',' +
+                          //       widget.plants[i].name +
+                          //       '\n');
+                          // }
                           return const SizedBox(height: 0);
                         }
                       }),
@@ -150,6 +159,92 @@ class _PlantGeneratorScreenState extends State<PlantGeneratorScreen> {
                           );
                         }
                       }),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FutureBuilder<Weather>(
+                    future: Provider.of<WeatherProvider>(context, listen: false)
+                        .getWeather('Ho Chi Minh city'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('error'),
+                        );
+                      } else if (snapshot.data == null) {
+                        return const Center(
+                            child: Text('No plants available.'));
+                      } else {
+                        Weather weather = snapshot.data!;
+                        DateTime now = DateTime.now();
+
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(
+                              top: 10, bottom: 10, left: 20, right: 20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xFF666538)),
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Ho Chi Minh City',
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15)),
+                                  ),
+                                  Text(formatDate(now),
+                                      style: GoogleFonts.inter(
+                                          textStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12)))
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        (weather.temperature - 273)
+                                                .toInt()
+                                                .toString() +
+                                            ' ° F',
+                                        style: GoogleFonts.inter(
+                                            textStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 30))),
+                                    Text(
+                                      weather.description.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.inter(
+                                          color: Colors.white, fontSize: 12),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                height: 80,
+                                child: SvgPicture.asset(
+                                    'assets/weather/' + weather.main + '.svg'),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -336,4 +431,54 @@ class InputField extends StatelessWidget {
       ],
     );
   }
+}
+
+String formatDate(DateTime date) {
+  // List of month names
+  final monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
+  // Get month name
+  String month = monthNames[date.month - 1];
+
+  // Get day with suffix (e.g., 1st, 2nd, 3rd)
+  String day = date.day.toString();
+  if (date.day >= 11 && date.day <= 13) {
+    day += 'th';
+  } else {
+    switch (date.day % 10) {
+      case 1:
+        day += 'st';
+        break;
+      case 2:
+        day += 'nd';
+        break;
+      case 3:
+        day += 'rd';
+        break;
+      default:
+        day += 'th';
+        break;
+    }
+  }
+
+  // Get year
+  String year = date.year.toString();
+
+  // Format the date
+  String formattedDate = '$month $day, $year';
+
+  return formattedDate;
 }
