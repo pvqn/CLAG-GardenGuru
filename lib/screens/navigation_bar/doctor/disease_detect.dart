@@ -20,7 +20,7 @@ class DiseaseDetectScreen extends StatefulWidget {
 }
 
 class _DiseaseDetectState extends State<DiseaseDetectScreen> {
-  late int index;
+  int index = 0;
   late List<Disease> diseases;
   XFile? _selectedImage;
 

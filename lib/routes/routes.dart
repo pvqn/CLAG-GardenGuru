@@ -17,9 +17,10 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: DiseaseRoute.page),
         AutoRoute(page: DiseaseDetectRoute.page),
         AutoRoute(page: ChatWithDoctorRoute.page),
-        AutoRoute(page: SignUpRoute.page, initial: true),
+        AutoRoute(page: SignUpRoute.page),
         AutoRoute(page: LoginRoute.page),
         AutoRoute(page: AddPostRoute.page),
-        AutoRoute(page: RoutineRoute.page)
+        AutoRoute(page: RoutineRoute.page),
+        AutoRoute(page: GetStartedRoute.page, initial: true)
       ];
 }

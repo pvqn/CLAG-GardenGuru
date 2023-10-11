@@ -40,6 +40,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: DiseaseScreen(item: args.item),
       );
     },
+    GetStartedRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: GetStartedScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -168,6 +174,20 @@ class DiseaseRouteArgs {
   String toString() {
     return 'DiseaseRouteArgs{item: $item}';
   }
+}
+
+/// generated route for
+/// [GetStartedScreen]
+class GetStartedRoute extends PageRouteInfo<void> {
+  const GetStartedRoute({List<PageRouteInfo>? children})
+      : super(
+          GetStartedRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'GetStartedRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
